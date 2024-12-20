@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYOA</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            transition: background-color 0.3s ease;
+            overflow: hidden; 
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        /* Click Me button styling */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: darkgray; 
+            color: white;
+            border: 2px solid #333; 
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #555; 
+        }
+
+        
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+     
+        #modal {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #modal .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #3498db;
+        }
+
+       
+        .modal-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #goodBtn {
+            background-color: green;
+            color: white;
+        }
+
+        #badBtn {
+            background-color: red;
+            color: white;
+        }
+
+        
+        .checkmark {
+            position: fixed;
+            font-size: 50px;
+            animation: floatBubble 5s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes floatBubble {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--random-x), var(--random-y));
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+
+<div id="loadingScreen">
+    <div id="loader"></div>
+</div>
+
+
+<div id="mainContent" style="display: none;">
+    <h1>CYOA Tech Assignment</h1>
+    <button id="clickMeBtn">Click Me!</button>
+</div>
+
+
+<div id="modal">
+    <span class="close" id="modalClose">&times;</span>
+    <p id="modalMessage">How is your day?</p>
+    <button class="modal-button" id="goodBtn">Good</button>
+    <button class="modal-button" id="badBtn">Bad</button>
+</div>
+
+<script>
+    
+    window.onload = function() {
+        setTimeout(function() {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }, 2000);
+    };
+
+    
+    document.getElementById('clickMeBtn').addEventListener('click', function() {
+        
+        const newWindow = window.open('about:blank', '_blank');
+        newWindow.document.write('<html><head><title>Cool Right?</title></head><body><h1 style="text-align:center;">Cool Right?</h1><p>Fun Fact: I used to do HTML/CSS back in 4th/5th grade when I wanted to make a website and now I made this one.</p><br><p>Credits: Github for the website hosting. ChatGPT for the Java Script code</p></body></html>');
+
+        
+        this.textContent = 'Click Me Again!';
+        
+        
+        this.removeEventListener('click', arguments.callee);
+        this.addEventListener('click', function() {
+            
+            document.getElementById('modal').style.display = 'block';
+        });
+    });
+
+    
+    document.getElementById('modalClose').addEventListener('click', function() {
+        document.getElementById('modal').style.display = 'none';
+    });
+
+    
+    document.getElementById('goodBtn').addEventListener('click', function() {
+        console.log("User's day: Good");
+        
+        
+        for (let i = 0; i < 20; i++) {
+            const checkmark = document.createElement('div');
+            checkmark.classList.add('checkmark');
+            checkmark.textContent = '✔️';
+            
+            
+            checkmark.style.setProperty('--random-x', `${Math.random() * 100 - 50}vw`);
+            checkmark.style.setProperty('--random-y', `${Math.random() * 100 - 50}vh`);
+            
+            document.body.appendChild(checkmark);
+        }
+
+        
+        document.getElementById('goodBtn').style.display = 'none';
+        document.getElementById('badBtn').style.display = 'none';
+
+        
+        document.getElementById('modal').style.display = 'none';
+    });
+
+    
+    document.getElementById('badBtn').addEventListener('click', function() {
+        console.log("User's day: Bad");
+        
+        
+        document.getElementById('modalMessage').textContent = "It's fine, tomorrow will be a better day!";
+
+        
+        document.getElementById('goodBtn').style.display = 'none';
+        document.getElementById('badBtn').style.display = 'none';
+    });
+</script>
+
+</body>
+</html>
